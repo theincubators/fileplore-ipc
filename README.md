@@ -4,7 +4,7 @@ The goal of this project is to build a minimum viable product (MVP) of the IPC e
 
 > InterPlanetary Consensus (IPC) is a revolutionary blockchain technology that powers planetary-scale web3 apps.
 
-You can learn more about this technology at [https://www.ipc.space](https://www.ipc.space).
+You can learn more about this technology 
 
 Using IPC Explorer you can:
 
@@ -16,7 +16,7 @@ Using IPC Explorer you can:
 - [x] View recent subnet withdrawals.
 - [x] View recent subnet transactions.
 
-Check out IPC Explorer [website](https://ipcexplorer.com) or run the application [locally](#running-locally).
+Check out IPC Explorer [website](https://fileplorer.com) or run the application [locally](#running-locally).
 
 ## How it's made
 
@@ -108,82 +108,3 @@ Now you should be able to connect to subnet RPC from the locally running applica
 http://localhost:9545
 ```
 
-### Manual testing using ipc-cli
-
-The following is a simplified and limited version of [the official documentation](https://docs.ipc.space/quickstarts/deploy-a-subnet) about deploying a subnet.
-If you need a fully operational subnet follow the official instructions instead.
-
-1. First, you need to build a Docker image for `ipc-cli`:
-
-```sh
-make build-ipc-cli-docker
-```
-
-2. Initialize your `ipc-cli` config:
-
-```sh
-mkdir .ipc
-
-cat << EOF > .ipc/config.toml
-keystore_path = "~/.ipc-keystore"
-
-[[subnets]]
-id = "/r314159"
-
-[subnets.config]
-network_type = "fevm"
-provider_http = "https://api.calibration.node.glif.io/rpc/v1"
-gateway_addr = "`curl -s https://raw.githubusercontent.com/consensus-shipyard/ipc/cd/contracts/deployments/r314159.json | jq -r '.gateway_addr'`"
-registry_addr = "`curl -s https://raw.githubusercontent.com/consensus-shipyard/ipc/cd/contracts/deployments/r314159.json | jq -r '.registry_addr'`"
-EOF
-```
-
-Note the non-default `keystore_path`.
-This is the path where a Docker volume will be mounted to persist wallet keys for the `ipc-cli` container.
-
-3. Set up a new wallet.
-
-```sh
-make ipc-cli-new-wallet
-```
-
-Make note of the address of the wallet you created.
-And set it as your default wallet:
-
-```sh
-wallet=NEW_WALLET_ADDRESS make ipc-cli-set-default-wallet
-```
-
-4. Go to the [Calibration faucet](https://faucet.calibnet.chainsafe-fil.io/) and get some funds sent to this new wallet.
-
-#### Create a child subnet
-
-```sh
-make ipc-cli-create-subnet
-```
-
-Make a note of the address of the subnet you created.
-
-#### Join the subnet from your validator (i.e., the wallet you created earlier)
-
-First, get the public key of your wallet and note it down:
-
-```sh
-wallet=NEW_WALLET_ADDRESS make ipc-cli-wallet-pub-key
-```
-
-Now, join the subnet:
-
-```sh
-subnet=NEW_SUBNET_ID pubkey=NEW_WALLET_PUBKEY make ipc-cli-join-subnet
-```
-
-#### Deposit funds
-
-```sh
-subnet=NEW_SUBNET_ID amount=0.01 make ipc-cli-fund
-```
-
-#### Withdraw funds
-
-Withdrawing funds requires a running subnet.
