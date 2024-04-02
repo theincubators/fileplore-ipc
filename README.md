@@ -70,23 +70,6 @@ Another useful feature will be the ability to connect your Metamask wallet to a 
 
 ## Development
 
-### Running locally
-
-First, clone the repository and `cd` into its directory:
-
-```sh
-git clone git@github.com:31z4/ipc-explorer.git
-cd ipc-explorer
-```
-
-Now, simply run the following commands to install all required packages and run a development server:
-
-```sh
-npm install
-npm run dev
-```
-
-The application is running at [http://localhost:5173](http://localhost:5173).
 
 #### Connecting to a local subnet RPC
 
